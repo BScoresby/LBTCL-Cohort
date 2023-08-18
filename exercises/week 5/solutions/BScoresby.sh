@@ -10,9 +10,6 @@ setup(){
         daemon=1" >> /home/$USER/.bitcoin/tmp/bitcoin.conf
     BITCOINCLI="/usr/local/bin/bitcoin/bin/bitcoin-cli"
     DATADIR="-datadir=/home/$USER/.bitcoin/tmp"
-}
-
-install_jq(){
     if ! command -v jq &> /dev/null
     then
         sudo apt-get install jq
@@ -88,7 +85,6 @@ cleanup(){
 
 #SETUP
 setup
-install_jq
 start_bitcoind
 
 #SETUP A RELATIVE TIMELOCK
@@ -110,7 +106,6 @@ create_transaction Alice Miner
 #5. Report in the terminal output what happens when you try to broadcast the 2nd transaction.
 sign_transaction Alice "$HEX"
 echo "When you try to broadcast this timelocked transaction, Bitcoin Core produces an error message with error code: -26 and the message 'non-BIP68-final' because the transaction will not be relayed by nodes until the relative timelock has expired." 
-decode_transaction
 
 #SPEND FROM RELATIVE TIMELOCK 
 #1. Generate 10 more blocks.
@@ -124,4 +119,4 @@ mine_new_blocks Miner 1
 get_balance Alice
 
 #CLEANUP
-#cleanup
+cleanup
